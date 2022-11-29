@@ -75,7 +75,7 @@ int validacaoGanharPelaColuna() {
 int validacaoGanharPelaDiagonalPrimaria() {
     int lin, contador = 1;
     for(lin = 0; lin < 2; lin++) {
-        if(validacaoCaractere(matriz_jogo[lin][lin] && matriz_jogo[lin][lin] == matriz_jogo[lin+1][lin+1])) {
+        if(validacaoCaractere(matriz_jogo[lin][3-lin-1]) && matriz_jogo[lin][3-lin-1] == matriz_jogo[lin+1][lin+1]) {
             contador++;
         }
     }
