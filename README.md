@@ -20,3 +20,18 @@ jogador está vazia.
 
 **void imprimirMatrizJogo() {}**
 -> Função responsável por imprimir o desenho do jogo da velha paralelamente a função que estrutura a a matriz.
+
+**int validacaoGanharPelaLinha() {}**
+-> Função que valida se o jogador ganhou pelas linhas
+
+**int validacaoGanharPelaColuna() {}**
+-> Função que valida se o jogador ganhou pelas colunas
+
+**int validacaoGanharPelaDiagonalPrimaria() {}**
+-> Função que valida se o jogador ganhou pelas Diagonal Primaria
+
+**int validacaoGanharDiagonalSecundaria() {}**
+-> Função que valida se o jogador ganhou pelas Diagonal Secundaria
+
+**void iniciarJogo() {}**
+-> Função responsável por inicializar o jogo e o decorrer de toda a lógica
