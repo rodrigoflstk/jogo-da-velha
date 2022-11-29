@@ -7,19 +7,27 @@ char matriz_jogo[3][3];
 int validacaoCaractere(char letra) {      
     if(letra == 'x' || letra == 'o') {
         return 1;
-    } else {
-        printf("Digite um caractere válido (x ou o)");
     }
+    printf("Digite um caractere válido (x ou o)");
+    return 0;
 }
 
 int validacaoCoordenada(int x, int y) {   
-    if (x >=0 && x < 3 ) {
+    if (x >=0 && x < 3) {
         if(y >= 0 && y < 3) {
             return 1;
         }
-    } else {
-        printf("Digite uma coordenada válida (0, 1 ou 2)");
     }
+    printf("A coordenada digitada é inválida (utilize 'x' ou 'o')");
+    return 0;
+}
+
+int validacaoPosicaoVazia(int x, int y) {
+    if (matriz_jogo[x][y] != 'x' && matriz_jogo[x][y] != 'o' ) {
+        return 1;
+    }
+    printf("Essa posição já foi ocupada!");
+    return 0;
 }
 
 void estruturarJogo() {           
@@ -31,20 +39,11 @@ void estruturarJogo() {
     }
 }
 
-int ValidacaoPosicaoVazia(int x, int y) {
-    if (matriz_jogo[x][y] != 'x' && matriz_jogo[x][y] != 'o' ) {
-        return 1;
-    } else {
-        printf("Essa posição já foi ocupada!");
-    }
-}
-
-int ValidacaoGanharPelaLinha() {
+int validacaoGanharPelaLinha() { // REFATORAR
     int lin, col, contador = 1;
 
     for(lin = 0; lin < 3; lin++) {
         for(col = 0; col < 2; col++) {
-            
             if(validacaoCaractere(matriz_jogo[lin][col]) && matriz_jogo[lin][col] == matriz_jogo[lin][col + 1]) {
                 contador++;
             }
@@ -57,13 +56,13 @@ int ValidacaoGanharPelaLinha() {
     return 0;
 }
 
-int ValidacaoGanharPelaColuna() {
+int validacaoGanharPelaColuna() { // REFATORAR
     int lin, col, contador = 1;
 
     for(lin = 0; lin < 3; lin++) {
         for(col = 0; col < 2; col++) {
             
-            if(validacaoCaractere(matriz_jogo[lin][col]) && matriz_jogo[lin][col] == matriz_jogo[lin + 1][col]) {
+            if(validacaoCaractere(matriz_jogo[col][lin]) && matriz_jogo[col][lin] == matriz_jogo[col + 1][lin]) {
                 contador++;
             }
         }
@@ -75,31 +74,31 @@ int ValidacaoGanharPelaColuna() {
     return 0;
 }
 
-int ValidacaoGanharPelaDiagonalPrimaria() {
+int validacaoGanharPelaDiagonalPrimaria() { // REFATORAR
     int lin, contador = 1;
     for(lin = 0; lin < 2; lin++) {
         if(validacaoCaractere(matriz_jogo[lin][lin] && matriz_jogo[lin][lin] == matriz_jogo[lin+1][lin+1])) {
             contador ++;
         }
-        if(contador == 3) {
-            return 1;
-        } else {
-            return 0;
-        }
+    }
+    if(contador == 3) {
+        return 1;
+    } else {
+        return 0;
     }
 }
 
-int ValidacaoGanharPelaDiagonalSecundaria() {
+int validacaoGanharPelaDiagonalSecundaria() { // REFATORAR
     int lin, contador = 1;
     for(lin = 0; lin < 2; lin++) {
         if(validacaoCaractere(matriz_jogo[lin][lin] && matriz_jogo[lin][3-lin-1] == matriz_jogo[lin+1][3-lin-1])) {
             contador ++;
         }
-        if(contador == 3) {
-            return 1;
-        } else {
-            return 0;
-        }
+    }
+    if(contador == 3) {
+        return 1;
+    } else {
+        return 0;
     }
 }
 
@@ -126,7 +125,7 @@ void imprimirMatrizJogo() {
     }
 }
 
-void iniciarJogo() {
+void iniciarJogo() { // REFATORAR
     int lin, col, validacao, jogadas = 0, ganhou = 0, ordem = 1;
     
     do {
@@ -142,7 +141,7 @@ void iniciarJogo() {
             validacao = validacaoCoordenada(lin, col);
 
             if(validacao = 1) {
-                validacao += ValidacaoPosicaoVazia(lin, col);
+                validacao += validacaoPosicaoVazia(lin, col);
             }
         } while (validacao != 2);
 
@@ -159,10 +158,10 @@ void iniciarJogo() {
             ordem = 1;
         }
 
-        ganhou += ValidacaoGanharPelaLinha();
-        ganhou += ValidacaoGanharPelaColuna();
-        ganhou += ValidacaoGanharPelaDiagonalPrimaria();
-        ganhou += ValidacaoGanharPelaDiagonalSecundaria();
+        ganhou += validacaoGanharPelaLinha();
+        ganhou += validacaoGanharPelaColuna();
+        ganhou += validacaoGanharPelaDiagonalPrimaria();
+        ganhou += validacaoGanharPelaDiagonalSecundaria();
     } while(ganhou == 0 && jogadas < 9);
 
     if(ganhou != 0) {
@@ -194,5 +193,3 @@ int main(int argc, char const *argv[])
 
     return 0;
 }
-
-
