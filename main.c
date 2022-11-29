@@ -7,9 +7,9 @@ char matriz_jogo[3][3];
 int validacaoCaractere(char letra) {      
     if(letra == 'x' || letra == 'o') {
         return 1;
+    } else {
+        return 0;
     }
-    printf("Digite um caractere válido (x ou o)");
-    return 0;
 }
 
 int validacaoCoordenada(int x, int y) {   
@@ -18,7 +18,6 @@ int validacaoCoordenada(int x, int y) {
             return 1;
         }
     }
-    printf("A coordenada digitada é inválida (utilize 'x' ou 'o')");
     return 0;
 }
 
@@ -26,20 +25,19 @@ int validacaoPosicaoVazia(int x, int y) {
     if (matriz_jogo[x][y] != 'x' && matriz_jogo[x][y] != 'o' ) {
         return 1;
     }
-    printf("Essa posição já foi ocupada!");
     return 0;
 }
 
 void estruturarJogo() {           
     int lin, col;
-    for (lin < 0; lin = 3; lin++) {
-        for(col < 0; col = 3; col++) {
+    for (lin = 0; lin < 3; lin++) {
+        for(col = 0; col < 3; col++) {
             matriz_jogo[lin][col] = ' ';
         }
     }
 }
 
-int validacaoGanharPelaLinha() { // REFATORAR
+int validacaoGanharPelaLinha() {
     int lin, col, contador = 1;
 
     for(lin = 0; lin < 3; lin++) {
@@ -56,7 +54,7 @@ int validacaoGanharPelaLinha() { // REFATORAR
     return 0;
 }
 
-int validacaoGanharPelaColuna() { // REFATORAR
+int validacaoGanharPelaColuna() { 
     int lin, col, contador = 1;
 
     for(lin = 0; lin < 3; lin++) {
@@ -74,11 +72,11 @@ int validacaoGanharPelaColuna() { // REFATORAR
     return 0;
 }
 
-int validacaoGanharPelaDiagonalPrimaria() { // REFATORAR
+int validacaoGanharPelaDiagonalPrimaria() {
     int lin, contador = 1;
     for(lin = 0; lin < 2; lin++) {
         if(validacaoCaractere(matriz_jogo[lin][lin] && matriz_jogo[lin][lin] == matriz_jogo[lin+1][lin+1])) {
-            contador ++;
+            contador++;
         }
     }
     if(contador == 3) {
@@ -88,11 +86,11 @@ int validacaoGanharPelaDiagonalPrimaria() { // REFATORAR
     }
 }
 
-int validacaoGanharPelaDiagonalSecundaria() { // REFATORAR
+int validacaoGanharPelaDiagonalSecundaria() {
     int lin, contador = 1;
     for(lin = 0; lin < 2; lin++) {
-        if(validacaoCaractere(matriz_jogo[lin][lin] && matriz_jogo[lin][3-lin-1] == matriz_jogo[lin+1][3-lin-1])) {
-            contador ++;
+        if(validacaoCaractere(matriz_jogo[lin][3-lin-1]) && matriz_jogo[lin][3-lin-1] == matriz_jogo[lin+1][3-lin-2]) {
+            contador++;
         }
     }
     if(contador == 3) {
@@ -104,14 +102,13 @@ int validacaoGanharPelaDiagonalSecundaria() { // REFATORAR
 
 void imprimirMatrizJogo() {
     int lin, col;
-    
-    printf("\n\t   0   1   2\n");
+    printf("\n\t    0  1  2\n");
     for(lin = 0; lin < 3; lin++) {
         printf("\t%d ", lin);
         
         for(col = 0; col < 3; col++) {
             if(col < 2) {
-                printf(" %c  |", matriz_jogo[lin][col]);
+                printf(" %c |", matriz_jogo[lin][col]);
             }    
             else {
                 printf(" %c ", matriz_jogo[lin][col]);
@@ -125,30 +122,30 @@ void imprimirMatrizJogo() {
     }
 }
 
-void iniciarJogo() { // REFATORAR
-    int lin, col, validacao, jogadas = 0, ganhou = 0, ordem = 1;
+void iniciarJogo() {
+    int x, y, validacao, jogadas = 0, ganhou = 0, ordem = 1;
     
     do {
         do {
             imprimirMatrizJogo();
             
             printf("\n\nDigite a linha que deseja jogar: ");
-            scanf("%d", &lin);
+            scanf("%d", &x);
 
             printf("Digite a coluna que deseja jogar: ");
-            scanf("%d", &col);
+            scanf("%d", &y);
 
-            validacao = validacaoCoordenada(lin, col);
+            validacao = validacaoCoordenada(x, y);
 
-            if(validacao = 1) {
-                validacao += validacaoPosicaoVazia(lin, col);
+            if(validacao == 1) {
+                validacao += validacaoPosicaoVazia(x, y);
             }
         } while (validacao != 2);
 
         if(ordem == 1) {
-            matriz_jogo[lin][col] = 'x';
+            matriz_jogo[x][y] = 'x';
         } else {
-            matriz_jogo[lin][col] = 'o';
+            matriz_jogo[x][y] = 'o';
         }
         
         jogadas++;
@@ -165,17 +162,18 @@ void iniciarJogo() { // REFATORAR
     } while(ganhou == 0 && jogadas < 9);
 
     if(ganhou != 0) {
+        imprimirMatrizJogo();
         if(ordem - 1 == 1) {
-            printf("\n Parabéns %s. Você foi o vencedor!!\n", p1);
+            printf("\n Parabéns %s Você foi o vencedor!!\n", p1);
         } else {
-            printf("\n Parabéns %s. Você foi o vencedor !!\n", p2);
+            printf("\n Parabéns %s Você foi o vencedor !!\n", p2);
         } 
     } else {
         printf("\n DEU RUIM!! O jogo ficou empatado.\n\n");
     }
 }
 
-int main(int argc, char const *argv[])
+int main()
 {
     int op;
 
@@ -186,8 +184,9 @@ int main(int argc, char const *argv[])
     fgets(p2, 50, stdin);
 
     do {
+        estruturarJogo();
         iniciarJogo();
-        printf("Deseja jogar novamente?\n 1- sim\n 2 - não");
+        printf("Deseja jogar novamente?\n 1- sim\n 2 - não\n");
         scanf("%d", &op);
     } while(op == 1);
 
